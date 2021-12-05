@@ -1,6 +1,6 @@
-Task1 Defining custom topologies
+#Task1 Defining custom topologies
 
-1. what is the output of "nodes" and "net"  
+##1. what is the output of "nodes" and "net"  
 ```
 nodes
 ```  
@@ -26,7 +26,7 @@ s6 lo:  s6-eth1:s5-eth2 s6-eth2:h5-eth0 s6-eth3:h6-eth0
 s7 lo:  s7-eth1:s5-eth3 s7-eth2:h7-eth0 s7-eth3:h8-eth0  
 c0  
   
-2. What is the output of "h7 ifconfig"    
+##2. What is the output of "h7 ifconfig"    
 ```
 h7 ifconfig  
 ```
@@ -48,21 +48,21 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX packets 0  bytes 0 (0.0 B)  
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0  
   
-Task2: Analyze the "of_tutorial" controller  
-1. Controller behavior
+#Task2: Analyze the "of_tutorial" controller  
+##1. Controller behavior
 ```  
 self._handle_PacketIn (event)
 self.act_like_hub (packet, packet_in)  
 self.resend_packet (pakket_in, of.OFPP_ALL)  
 ```
-2. rtt(round trip time) latency test  
-h1 ping h2:  
+##2. rtt(round trip time) latency test  
+###h1 ping h2:  
 ```
 h1 ping -c 100 h2  
 ```
 average: 1.209 ms  
 min/max: 0.812, 2.724 ms  
-h1 ping h8  
+###h1 ping h8  
 ```
 h1 ping -c 100 h8  
 ```
