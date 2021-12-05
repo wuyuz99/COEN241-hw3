@@ -31,8 +31,7 @@ h7-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         RX packets 68  bytes 5212 (5.2 KB)  
         RX errors 0  dropped 0  overruns 0  frame 0  
         TX packets 11  bytes 866 (866.0 B)  
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0  
-  
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0    
 lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536  
         inet 127.0.0.1  netmask 255.0.0.0  
         inet6 ::1  prefixlen 128  scopeid 0x10<host>  
@@ -71,7 +70,6 @@ When performing either of two pings, each of those switches experience at least 
 Task 3. MAC Learning Controller  
 1. How the code works  
 Every “switch” holds a dictionary that maps the mac address to a specific port. Whenever a “switch” receive a package, if it is not yet in the dictionary, the “switch” will “memorize” the source mac and the port it comes from in the dictionary. The next time same mac address is met, the switch will only forward the packet to the port that’s being “memorized”.  
-  
 If we do a h1 ping h2, on the way out, each switch will memorize the mac address of h1 and corresponding port. When the reply goes from h2 to h1, on the way back, s3 knows port for MAC address of h1 so it will only send the package to that port.  
 
 2. rtt(round trip time) latency test  
