@@ -38,6 +38,7 @@ h7-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         RX errors 0  dropped 0  overruns 0  frame 0  
         TX packets 11  bytes 866 (866.0 B)  
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0    
+  
 lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536  
         inet 127.0.0.1  netmask 255.0.0.0  
         inet6 ::1  prefixlen 128  scopeid 0x10<host>  
@@ -48,15 +49,23 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0  
   
 Task2: Analyze the "of_tutorial" controller  
-1. Controller behavior  
-self._handle_PacketIn (event) → self.act_like_hub (packet, packet_in) → self.resend_packet (pakket_in, of.OFPP_ALL)  
+1. Controller behavior
+```  
+self._handle_PacketIn (event)
+self.act_like_hub (packet, packet_in)  
+self.resend_packet (pakket_in, of.OFPP_ALL)  
+```
 2. rtt(round trip time) latency test  
 h1 ping h2:  
+```
 h1 ping -c 100 h2  
+```
 average: 1.209 ms  
 min/max: 0.812, 2.724 ms  
 h1 ping h8  
+```
 h1 ping -c 100 h8  
+```
 average: 4.200 ms  
 min/max: 2.981, 6.414 ms  
 It could be observed that the latency of h1 ping h2 is a lot lower compared to ping h8. Looking back at the tree structure, it could be seen that there are less switches are passed between h1 and h2. This is leading to the different in the time.  
@@ -64,10 +73,14 @@ In addition to that, it could be observed that the max latency always appear at 
 3. TCP bandwidth test  
 iperf tests the TCP bandwidth between two hosts inside the network. Returns(prints) [server, client] speeds  
 Performance between h1 and h2:  
+```
 iperf h1 h2  
+```
 ['19.3 Mbits/sec', '22.1 Mbits/sec']  
 Performance between h1 and h8:  
+```
 iperf h1 h8  
+```
 ['5.08 Mbits/sec', '5.58 Mbits/sec']  
 It is pretty obvious that h1 and h2 have a lot larger bandwidth. TCP will increase the bandwidth as the connection between nodes allows. One of the aspect deciding that is the return time between nodes. With lower return time, it is assuming there are still more bandwidth available so it will continue increase. With lower rtt between h1 and h2, more bandwidth will be allowed.  
 4. traffic observation  
@@ -80,20 +93,28 @@ If we do a h1 ping h2, on the way out, each switch will memorize the mac address
 
 2. rtt(round trip time) latency test  
 h1 ping h2:  
+```
 h1 ping -c 100 h2  
+```
 average: 1.080 ms  
 min/max: 0.685, 1.561 ms  
 h1 ping h8  
+```
 h1 ping -c 100 h8  
+```
 average: 3.079 ms  
 min/max: 2.148, 3.837 ms  
 the latency is lower this time. Although there will be some overhead in deciding and storing all those mappings, switches no longer need to push the message to all routers after it received the message once sourced from the source/destiny. This will greatly improve the performance especially when there are more steps between source and destiny nodes.  
 3. TCP bandwidth test  
 Performance between h1 and h2:  
+```
 iperf h1 h2  
+```
 ['83.4 Mbits/sec', '86.3 Mbits/sec']  
 Performance between h1 and h8:  
+```
 iperf h1 h8  
+```
 ['11.4 Mbits/sec', '12.5 Mbits/sec']  
 It is worth noting that the bandwidth varies a lot between different trials.  
 As the latency gets better, for the same reason as the Part 2, the maximum allowed bandwidth will be higher. In addition to that, just sending the message to one other router instead of broadcasting will save a lot of bandwidth for the “effective” data transfer.  
